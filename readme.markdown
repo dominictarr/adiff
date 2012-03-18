@@ -1,7 +1,9 @@
-# snob
+# adiff - Array diff tools is javacript
 
-snob is a version control system written in js. consider it a a minimial port of git.
-one of the best uses is to learn you exactly how git works. 
+adiff is a minimal implementation of diff tools, diff, patch, diff3 in javascript.
+
+I initially started writing this to understand how git works. then i got totally carried away.
+adiff is a central component in [snob](http://github.com/dominictarr/snob) a self hosting port of git to javascript.
 
 ## how git works.
 
@@ -74,24 +76,7 @@ if we want a _distributed_ version management system, the we need to be able to 
 this is only a slightly more complicated problem. given a string `"ABDCEF"`, If I changed it to `"ABCXYZF"`
 and meanwhile you changed it to "AXBCEFG". we must compare each of our changes to the original string, the [Concestor](http://en.wikipedia.org/wiki/Concestor)
 
+## merging rules
+
 TODO: worked example with chunks, resolve.
 
-## self hosting!
-
-snob became self hosting 
-
-```
-4f63d2637ae35e9313fd4f23ea6cf4e8e527ba3c null Sun, 18 Mar 2012 08:20:34 GMT
-```
-
-
-## what next?
-
-refactor snob out of adiff. 
-still thinking about how I will manage diffs on objects,
-  - refactor vu, with what I know now.
-giving snob a cli, and in particular, push/pullable remotes, is the first step to being distributed.
-
-  - improve support for injection with merge resolution.
-  - get running in the browser
-  - make Repository an EventEmitter
