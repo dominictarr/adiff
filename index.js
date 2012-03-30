@@ -35,7 +35,7 @@ function _equal(a, b) {
     if(a.length != b.length) return false
   if(a && 'object' == typeof a) {
     for(var i in a)
-      if(!equal(a[i], b[i])) return false
+      if(!_equal(a[i], b[i])) return false
     return true
   }
   return a == b
