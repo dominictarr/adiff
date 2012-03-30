@@ -200,8 +200,6 @@ var exports = module.exports = function (deps, exports) {
 
   var rules = (deps && deps.rules) || [exports.oddOneOut, exports.insertMergeOverDelete]
 
-  console.log('rules',rules)
-
   function resolve (changes) {
     var l = rules.length
     for (var i in rules) { // first
