@@ -25,11 +25,20 @@ function any(ary, test) {
   return false
 }
 
-function equal(a, b) {
-  if(a.length != b.length) return false
-  for(var i in a)
-    if(a[i] !== b[i]) return false
-  return true
+var _rules // set at the bottom  
+
+// note, naive implementation. will break on circular objects.
+
+function _equal(a, b) {
+  if(a && !b) return false
+  if(Array.isArray(a))
+    if(a.length != b.length) return false
+  if(a && 'object' == typeof a) {
+    for(var i in a)
+      if(!equal(a[i], b[i])) return false
+    return true
+  }
+  return a == b
 }
 
 function getArgs(args) {
@@ -57,9 +66,9 @@ function oddElement(ary, cmp) {
   guess(1)
   return c == 0 ? 0 : -1
 }
-
-module.exports = function (exports, deps) {
-  exports = exports || {}  
+var exports = module.exports = function (deps, exports) {
+  var equal = (deps && deps.equal) || _equal
+  exports = exports || {} 
   exports.lcs = 
   function lcs() {
     var cache = {}
@@ -75,7 +84,7 @@ module.exports = function (exports, deps) {
       //avoid exponential time by caching the results
       if(cache[key(a, b)]) return cache[key(a, b)]
 
-      if(a[0] == b[0])
+      if(equal(a[0], b[0]))
         return [head(a)].concat(recurse(tail(a), tail(b)))
       else { 
         var _a = recurse(tail(a), b)
@@ -162,8 +171,7 @@ module.exports = function (exports, deps) {
     })
     return r
   }
-
-  var rules = exports.rules = [
+  exports.oddOneOut =
     function oddOneOut (changes) {
       changes = changes.slice()
       //put the concestor first
@@ -173,7 +181,8 @@ module.exports = function (exports, deps) {
         return changes[1]
       if (~i)
         return changes[i] 
-    },
+    }
+  exports.insertMergeOverDelete = 
     //i've implemented this as a seperate rule,
     //because I had second thoughts about this.
     function insertMergeOverDelete (changes) {
@@ -188,16 +197,34 @@ module.exports = function (exports, deps) {
           else return // full conflict
       return nonempty
     }
-  ]
+
+  var rules = (deps && deps.rules) || [exports.oddOneOut, exports.insertMergeOverDelete]
+
+  console.log('rules',rules)
 
   function resolve (changes) {
     var l = rules.length
     for (var i in rules) { // first
-      var c = rules[i](changes)
+      
+      var c = rules[i] && rules[i](changes)
       if(c) return c
     }
     changes.splice(1,1) // remove concestor
+    //returning the conflicts as an object is a really bad idea,
+    // because == will not detect they are the same. and conflicts build.
+    // better to use
+    // '<<<<<<<<<<<<<'
+    // of course, i wrote this before i started on snob, so i didn't know that then.
+    /*var conflict = ['>>>>>>>>>>>>>>>>']
+    while(changes.length)
+      conflict = conflict.concat(changes.shift()).concat('============')
+    conflict.pop()
+    conflict.push          ('<<<<<<<<<<<<<<<')
+    changes.unshift       ('>>>>>>>>>>>>>>>')
+    return conflict*/
+    //nah, better is just to use an equal can handle objects
     return {'?': changes}
   }
+  return exports
 }
-module.exports(module.exports, {equal: equal})
+exports(null, exports)
