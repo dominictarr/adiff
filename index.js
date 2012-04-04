@@ -79,7 +79,6 @@ var exports = module.exports = function (deps, exports) {
     }
 
     function recurse (a, b) {
-
       if(!a.length || !b.length) return []
       //avoid exponential time by caching the results
       if(cache[key(a, b)]) return cache[key(a, b)]
@@ -111,13 +110,13 @@ var exports = module.exports = function (deps, exports) {
     var all = [lcs].concat(q)
 
     function matchLcs (e) {
-      return last(e) == last(lcs) || ((e.length + lcs.length) === 0)
+      return equal(last(e), last(lcs)) || ((e.length + lcs.length) === 0)
     }
 
     while(any(q, hasLength)) {
       //if each element is at the lcs then this chunk is stable.
       while(q.every(matchLcs) && q.every(hasLength)) 
-        all.forEach(retreat)
+        all.forEach(retreat) 
 
       //collect the changes in each array upto the next match with the lcs
       var c = false
