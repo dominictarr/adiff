@@ -64,4 +64,24 @@ if(!module.parent) {
   //most merges will be only 3 ways, so lets leave that for now.
 
   console.log(d.diff3(split("ABCXYZF"), split("ABDCEF"), split("AXBCEFG")))
+
+  function assertDiffPatch (a, b) {
+    a = split(a)
+    b = split(b)
+    var patch = d.diff(a, b)
+    var patched = d.patch(a, JSON.parse(JSON.stringify(patch)))
+
+    assert.deepEqual(b, patched)
+
+  }
+
+  assertDiffPatch('aabaab', 'abaab')
+  assertDiffPatch([
+    {a: true},
+    {b: false}
+  ], [
+    {a: true},
+    {b: false},
+    {c: 6} 
+  ])
 }
