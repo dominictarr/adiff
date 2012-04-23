@@ -110,6 +110,8 @@ var exports = module.exports = function (deps, exports) {
     var all = [lcs].concat(q)
 
     function matchLcs (e) {
+      if(e.length && !lcs.length || !e.length && lcs.length)
+        return false //incase the last item is null 
       return equal(last(e), last(lcs)) || ((e.length + lcs.length) === 0)
     }
 
