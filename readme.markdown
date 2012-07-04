@@ -80,3 +80,6 @@ and meanwhile you changed it to "AXBCEFG". we must compare each of our changes t
 
 TODO: worked example with chunks, resolve.
 
+## license
+
+MIT / Apache2
