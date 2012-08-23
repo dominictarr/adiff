@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/dominictarr/adiff.png)](http://travis-ci.org/dominictarr/adiff)
 # adiff - Array diff tools is javacript
 
 adiff is a minimal implementation of diff tools, diff, patch, diff3 in javascript.
