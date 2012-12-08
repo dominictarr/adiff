@@ -26,11 +26,12 @@ var d = require('../')
   test('AA', 'AA', 'AA')
   test('AB', 'BA', 'A')
   test('ABA', 'BAA', 'AA')
+  test('AAX', 'AAAX', 'AAX')
+  test('AAAX', 'AAX',  'AAX')
   test('TANYANA', 'BANANA', 'ANANA')
   // the naive model takes 2.5 seconds to find this:
   // time to optimise...
   test('aoenuthooao', 'eukmcybkraoaeuo', 'aoeuo')
   test('aoenuthooaeuoao', 'eukipoimcybkraoaeuo', 'euooaeuo')
   // added caching... now it's way faster.
-
 
