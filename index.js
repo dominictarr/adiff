@@ -73,10 +73,40 @@ var exports = module.exports = function (deps, exports) {
   function lcs() {
     var cache = {}
     var args = getArgs(arguments)
-   
+    var a = args[0], b = args[1]
+
     function key (a,b){
       return a.length + ':' + b.length
     }
+
+    //find length that matches at the head
+
+    if(args.length > 2) {
+      //if called with multiple sequences
+      //recurse, since lcs(a, b, c, d) == lcs(lcs(a,b), lcs(c,d))
+      args.push(lcs(args.shift(), args.shift()))
+      return lcs(args)
+    }
+    
+    //this would be improved by truncating input first
+    //and not returning an lcs as an intermediate step.
+    //untill that is a performance problem.
+
+    var start = 0, end = 0
+    for(var i = 0; i < a.length && i < b.length 
+      && equal(a[i], b[i])
+      ; i ++
+    )
+      start = i + 1
+
+    if(a.length === start)
+      return a.slice()
+
+    for(var i = 0;  i < a.length && i < b.length 
+      && equal(a[a.length - 1 - i], b[b.length - 1 - i])
+      ; i ++
+    )
+      end = i
 
     function recurse (a, b) {
       if(!a.length || !b.length) return []
@@ -91,14 +121,15 @@ var exports = module.exports = function (deps, exports) {
         return cache[key(a,b)] = _a.length > _b.length ? _a : _b  
       }
     }
+    
+    var middleA = a.slice(start, a.length - end)
+    var middleB = b.slice(start, b.length - end)
 
-    if(args.length > 2) {
-      //if called with multiple sequences
-      //recurse, since lcs(a, b, c, d) == lcs(lcs(a,b), lcs(c,d))
-      args.push(lcs(args.shift(), args.shift()))
-      return lcs(args)
-    }
-    return recurse(args[0], args[1])
+    return (
+      a.slice(0, start).concat(
+        recurse(middleA, middleB)
+      ).concat(a.slice(a.length - end))
+    )
   }
 
   // given n sequences, calc the lcs, and then chunk strings into stable and unstable sections.
@@ -113,6 +144,13 @@ var exports = module.exports = function (deps, exports) {
       if(e.length && !lcs.length || !e.length && lcs.length)
         return false //incase the last item is null 
       return equal(last(e), last(lcs)) || ((e.length + lcs.length) === 0)
+    }
+
+    function reverseEach(a, it) {
+      var l = a.length
+      while(l--) {
+        it(a[l], l, a)
+      }
     }
 
     while(any(q, hasLength)) {
