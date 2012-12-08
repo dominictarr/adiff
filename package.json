@@ -15,7 +15,8 @@
   "engines": {
     "node": "*"
   },
-  "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "tape": "~0.1.0"
+  },
   "optionalDependencies": {}
 }
