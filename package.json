@@ -10,10 +10,7 @@
   },
   "main": "./index.js",
   "scripts": {
-    "test": "node test.js"
-  },
-  "engines": {
-    "node": "*"
+    "test": "set -e; for t in test/*.js; do node $t; done"
   },
   "devDependencies": {
     "tape": "~0.1.0"
