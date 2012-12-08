@@ -102,7 +102,7 @@ var exports = module.exports = function (deps, exports) {
     if(a.length === start)
       return a.slice()
 
-    for(var i = 0;  i < a.length && i < b.length 
+    for(var i = 0;  i < a.length - start && i < b.length - start
       && equal(a[a.length - 1 - i], b[b.length - 1 - i])
       ; i ++
     )
@@ -146,18 +146,10 @@ var exports = module.exports = function (deps, exports) {
       return equal(last(e), last(lcs)) || ((e.length + lcs.length) === 0)
     }
 
-    function reverseEach(a, it) {
-      var l = a.length
-      while(l--) {
-        it(a[l], l, a)
-      }
-    }
-
     while(any(q, hasLength)) {
       //if each element is at the lcs then this chunk is stable.
       while(q.every(matchLcs) && q.every(hasLength)) 
         all.forEach(retreat) 
-
       //collect the changes in each array upto the next match with the lcs
       var c = false
       var unstable = q.map(function (e) {
@@ -168,7 +160,7 @@ var exports = module.exports = function (deps, exports) {
         }
         return change
       })
-      if(c) build(q[0].length, unstable)
+      if(c) build(q[0].length, unstable) 
     }
   }
 
