@@ -49,6 +49,7 @@ var d = require('../')
     var patched = d.patch(a, JSON.parse(JSON.stringify(patch)))
 
     assert.deepEqual(b, patched)
+    assert.end()
     })
 
   }
