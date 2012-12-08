@@ -1,6 +1,6 @@
+var tape = require('tape')
 var d = require('../')
 
-if(!module.parent) {
 
   var assert = require('assert')
   function split(a) {
@@ -10,15 +10,18 @@ if(!module.parent) {
   }
 
   function test (a, b, lcs) {
-    a = split(a)
-    b = split(b)
-    lcs = split(lcs)
-    var _lcs = d.lcs(a, b)
-    d.chunk([a, b], console.log)
-    assert.deepEqual(_lcs, lcs)
-    var changes = d.diff(a,b)
-    var newA = d.patch(a, changes)
-    assert.deepEqual(newA, b)
+    tape('lcs '+a+' '+b+' == '+lcs, function (assert) {
+      a = split(a)
+      b = split(b)
+      lcs = split(lcs)
+      var _lcs = d.lcs(a, b)
+      d.chunk([a, b], console.log)
+      assert.deepEqual(_lcs, lcs)
+      var changes = d.diff(a,b)
+      var newA = d.patch(a, changes)
+      assert.deepEqual(newA, b)
+      assert.end()
+    })
   }
 
   test('AA', 'AA', 'AA')
@@ -32,14 +35,14 @@ if(!module.parent) {
   // added caching... now it's way faster.
 
   function test3way(args, expected) {
-  args = args.map(split)
+    tape('diff3 '+args.join(' ')+' === '+expected, function (assert) {
+    args = args.map(split)
 
-    console.log('----- TEST', args)
-    console.log('***********')
     var p = d.diff3.apply(null, args)
     var r = d.patch(args[0], p)
     assert.deepEqual(r, split(expected))
-
+    assert.end()
+    })
   }
 
   // [this, concestor, other], expected
@@ -84,4 +87,4 @@ if(!module.parent) {
     {b: false},
     {c: 6} 
   ])
-}
+

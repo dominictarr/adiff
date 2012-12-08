@@ -1,5 +1,4 @@
-
-var assert = require('assert')
+require('tape')('tree-test', function (assert) {
 
 function listify(tree){
   var a = []
@@ -59,3 +58,6 @@ function diff3 () {
   console.log('DIFF', x)
 }
 
+assert.end()
+
+})
