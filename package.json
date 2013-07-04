@@ -13,7 +13,7 @@
     "test": "set -e; for t in test/*.js; do node $t; done"
   },
   "devDependencies": {
-    "tape": "~0.1.0"
+    "tape": "~1.0.0"
   },
   "optionalDependencies": {},
   "testling": {
