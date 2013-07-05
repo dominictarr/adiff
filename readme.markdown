@@ -2,6 +2,10 @@
 
 adiff is a minimal implementation of diff tools, diff, patch, diff3 in javascript.
 
+[![testling badge](https://ci.testling.com/dominictarr/adiff.png)](https://ci.testling.com/dominictarr/adiff)
+
+[![build status](https://secure.travis-ci.org/dominictarr/adiff.png)](http://travis-ci.org/dominictarr/adiff)
+
 I initially started writing this to understand how git works. then i got totally carried away.
 adiff is a central component in [snob](http://github.com/dominictarr/snob) a self hosting port of git to javascript.
 
