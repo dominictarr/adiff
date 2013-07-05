@@ -1,4 +1,12 @@
 var tape = require('tape')
+
+function log () {
+  var args = []
+  for (var i in arguments) 
+    args.push(arguments[i])
+  console.log(JSON.stringify(args))
+}
+
 var d = require('../')
 
   function split(a) {
@@ -16,7 +24,7 @@ var d = require('../')
       d.chunk([a, b], console.log)
       assert.deepEqual(_lcs, lcs)
       var changes = d.diff(a,b)
-      console.log('PATCH', changes)
+      log('PATCH', changes)
       var newA = d.patch(a, changes)
       assert.deepEqual(newA, b)
       assert.end()

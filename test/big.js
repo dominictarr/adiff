@@ -1,6 +1,13 @@
 var a = require('..')
 var tape = require('tape')
 
+function log () {
+  var args = []
+  for (var i in arguments) 
+    args.push(arguments[i])
+  console.log(JSON.stringify(args))
+}
+
 function test(n, times) {
 
 tape ('big '+n+'x'+times, function (t) {
@@ -35,7 +42,7 @@ tape ('big '+n+'x'+times, function (t) {
     t.deepEqual(_big, a.patch(big, p, true))
   }
 
-  console.log('TIME('+n+') = ', n/(Date.now() - start))
+  log('TIME('+n+') = ', n/(Date.now() - start))
   t.end()
 })
 

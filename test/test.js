@@ -1,4 +1,12 @@
 var tape = require('tape')
+
+function log () {
+  var args = []
+  for (var i in arguments) 
+    args.push(arguments[i])
+  console.log(JSON.stringify(args))
+}
+
 var d = require('../')
 
   function split(a) {
@@ -39,7 +47,7 @@ var d = require('../')
   //n-way merge where there is a delete and a false conflict.
   //most merges will be only 3 ways, so lets leave that for now.
 
-  console.log(d.diff3(split("ABCXYZF"), split("ABDCEF"), split("AXBCEFG")))
+  log(d.diff3(split("ABCXYZF"), split("ABDCEF"), split("AXBCEFG")))
 
   function assertDiffPatch (a, b) {
     tape('assertDiffPatch', function (assert) {

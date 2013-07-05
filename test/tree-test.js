@@ -1,5 +1,12 @@
 require('tape')('tree-test', function (assert) {
 
+function log () {
+  var args = []
+  for (var i in arguments) 
+    args.push(arguments[i])
+  console.log(JSON.stringify(args))
+}
+
 function listify(tree){
   var a = []
   function cat (b) {
@@ -53,9 +60,9 @@ diff3 (
 
 function diff3 () {
   var args = [].slice.call(arguments).map(listify)
-  console.log(args)
+  log(args)
   var x = d.diff3.apply(null, args)
-  console.log('DIFF', x)
+  log('DIFF', x)
 }
 
 assert.end()
