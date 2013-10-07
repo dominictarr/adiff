@@ -19,7 +19,7 @@ function hasLength (e) {
 }
 
 function any(ary, test) {
-  for(var i in ary)
+  for(var i=0;i<ary.length;i++)
     if(test(ary[i]))
       return true
   return false
