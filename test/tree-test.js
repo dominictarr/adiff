@@ -1,3 +1,4 @@
+require('es5-shim')
 require('tape')('tree-test', function (assert) {
 
 function log () {

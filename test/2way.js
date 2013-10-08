@@ -1,5 +1,7 @@
 var tape = require('tape')
 
+require('es5-shim')
+
 function log () {
   var args = []
   for (var i in arguments) 
