@@ -25,6 +25,17 @@ function any(ary, test) {
   return false
 }
 
+function score (a) {
+  return a.reduce(function (s, a) {
+      return s + a.length + a[1] + 1
+  }, 0)
+}
+
+function best (a, b) {
+  return score(a) <= score(b) ? a : b
+}
+
+
 var _rules // set at the bottom  
 
 // note, naive implementation. will break on circular objects.
@@ -144,14 +155,14 @@ var exports = module.exports = function (deps, exports) {
 
     function matchLcs (e) {
       if(e.length && !lcs.length || !e.length && lcs.length)
-        return false //incase the last item is null 
+        return false //incase the last item is null
       return equal(last(e), last(lcs)) || ((e.length + lcs.length) === 0)
     }
 
     while(any(q, hasLength)) {
       //if each element is at the lcs then this chunk is stable.
-      while(q.every(matchLcs) && q.every(hasLength)) 
-        all.forEach(retreat) 
+      while(q.every(matchLcs) && q.every(hasLength))
+        all.forEach(retreat)
       //collect the changes in each array upto the next match with the lcs
       var c = false
       var unstable = q.map(function (e) {
@@ -162,19 +173,48 @@ var exports = module.exports = function (deps, exports) {
         }
         return change
       })
-      if(c) build(q[0].length, unstable) 
+      if(c) build(q[0].length, unstable)
     }
+  }
+
+  //calculate a diff this is only updates
+  exports.optimisticDiff =
+  function (a, b) {
+    var M = Math.max(a.length, b.length)
+    var m = Math.min(a.length, b.length)
+    var patch = []
+    for(var i = 0; i < M; i++)
+      if(a[i] !== b[i]) {
+        var cur = [i], deletes = 0
+        while(a[i] !== b[i] && i < m) {
+          cur[1] = ++deletes
+          cur.push(b[i++])
+        }
+        //the rest are deletes or inserts
+        if(i >= m) {
+          //the rest are deletes
+          if(a.length > b.length)
+            cur[1] += a.length - b.length
+          //the rest are inserts
+          else if(a.length < b.length)
+            cur = cur.concat(b.slice(a.length))
+        }
+        patch.push(cur)
+      }
+
+    return patch
   }
 
   exports.diff =
   function (a, b) {
+    var optimistic = exports.optimisticDiff(a, b)
     var changes = []
     exports.chunk([a, b], function (index, unstable) {
       var del = unstable.shift().length
       var insert = unstable.shift()
       changes.push([index, del].concat(insert))
     })
-    return changes
+    return best(optimistic, changes)
   }
 
   exports.patch = function (a, changes, mutate) {
