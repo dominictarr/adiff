@@ -185,7 +185,7 @@ var exports = module.exports = function (deps, exports) {
     var patch = []
     for(var i = 0; i < M; i++)
       if(a[i] !== b[i]) {
-        var cur = [i], deletes = 0
+        var cur = [i,0], deletes = 0
         while(a[i] !== b[i] && i < m) {
           cur[1] = ++deletes
           cur.push(b[i++])
