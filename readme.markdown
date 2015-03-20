@@ -26,7 +26,7 @@ function lcs (a,b)
 (where max returns the longer list, head return the first element, and tail returns the rest of the sequence minus the head)
 
 this is very simple, but with exponential time complexity.
-however, it can easily be made sufficantly performant by cacheing the return value of each call to lcs().
+however, it can easily be made sufficiently performant by cacheing the return value of each call to lcs().
 
 see js implementation, [index.js#L64-94](https://github.com/dominictarr/adiff/blob/master/index.js#L63-94)
 
